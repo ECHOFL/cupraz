@@ -1,0 +1,22 @@
+save-interval: 10 # Temps en minutes pour save les homes (en cas de crash).
+
+messages:
+  home_set: "&7Home &a'%home%' &7a été crée!"
+  home_exists: "Home '%home%' existe déja!"
+  home_not_found: "Home '%home%' n'existe pas"
+  teleported_to_home: "&7Téléporté à l'home &a'%home%'."
+  max_home_number: "Nombre maximal de home atteint (%max-home%)!"
+  specify_home_to_set: "&4 Précise un nom pour le home à créer!"
+  invalid_home_name: "&cLe nom du home ne peut contenir que des lettres et des chiffres &f(a-z, A-Z, 0-9)."
+  specify_home_to_delete: "&4 Précise le nom pour le home à supprimer!"
+  specify_home_to_teleport: "&4 Précise le nom du home auquel te téléporter!"
+  home_deleted: "&7Le home &a'%home%' &7a été supprimé!"
+
+max-homes:
+  #Ajouter les noms ranks LuckPerms, le nombre est associé à la permission group.<nom> des rangs.
+  #Placer dans l'ordre de priorité des rangs.
+
+  #Mod: 5
+  mvp: 3
+  vip: 2
+  default: 1 #Ligne obligatoire pour valeur par défaut.
