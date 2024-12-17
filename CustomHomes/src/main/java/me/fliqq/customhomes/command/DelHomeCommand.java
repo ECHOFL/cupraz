@@ -1,23 +1,25 @@
 package me.fliqq.customhomes.command;
 
 import me.fliqq.customhomes.manager.HomeManager;
+import me.fliqq.customhomes.object.ConfirmDeletionHolder;
 import me.fliqq.customhomes.object.Home;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class DelHomeCommand implements CommandExecutor, TabCompleter {
     private final HomeManager homeManager;
-    private final Map<UUID, String> pendingConfirmations = new HashMap<>(); // Track players pending confirmation
+    private final Map<UUID, String> pendingDeletions = new HashMap<>();
 
     public DelHomeCommand(HomeManager homeManager) {
         this.homeManager = homeManager;
@@ -27,67 +29,92 @@ public class DelHomeCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage("Only players can use this command.");
-            return true; // Command executed successfully
+            return true;
         }
-    
+
         Player player = (Player) sender;
-    
-        // Check for correct number of arguments
+
         if (args.length != 1) {
-            player.sendMessage(homeManager.getConfigManager().getMessage("specify_home_to_delete")); // Use the new message here
-            return false; // Show usage message
+            player.sendMessage(homeManager.getConfigManager().getMessage("specify_home_to_delete"));
+            return false;
         }
-    
+
         String homeName = args[0];
-    
-        // Check if the home exists
+
         if (homeManager.getHome(player.getUniqueId(), homeName) == null) {
             player.sendMessage(homeManager.getConfigManager().getMessage("home_not_found").replace("%home%", homeName));
-            return true; // Home not found
+            return true;
         }
-    
-        // If there's already a pending confirmation for this player, proceed with deletion
-        if (pendingConfirmations.containsKey(player.getUniqueId())) {
-            if (pendingConfirmations.get(player.getUniqueId()).equals(homeName)) {
-                // Confirm deletion
-                homeManager.removeHome(player.getUniqueId(), homeName); // Call removeHome method here
-                player.sendMessage(homeManager.getConfigManager().getMessage("home_deleted").replace("%home%", homeName));
-                pendingConfirmations.remove(player.getUniqueId()); // Clear confirmation
-                return true; // Command executed successfully
-            } else {
-                // Cancel previous confirmation
-                pendingConfirmations.remove(player.getUniqueId());
-            }
+
+        pendingDeletions.put(player.getUniqueId(), homeName);
+        openConfirmationGUI(player, homeName);
+        return true;
+    }
+
+    @SuppressWarnings("deprecation")
+    private void openConfirmationGUI(Player player, String homeName) {
+        ConfirmDeletionHolder holder = new ConfirmDeletionHolder(homeName);
+        Inventory gui = Bukkit.createInventory(holder, 27, "§eConfirm la suppression de: §f§l" + homeName);
+
+        ItemStack redGlass = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+        ItemMeta redMeta = redGlass.getItemMeta();
+        redMeta.setDisplayName("§cAnnule la suppression");
+        redGlass.setItemMeta(redMeta);
+
+        for (int i = 0; i < gui.getSize(); i++) {
+            gui.setItem(i, redGlass);
         }
-    
-        // Ask for confirmation
-        player.sendMessage("Êtes-vous sûr de vouloir supprimer le home '" + homeName + "' ? Tapez /delhome " + homeName + " à nouveau pour confirmer.");
-        pendingConfirmations.put(player.getUniqueId(), homeName); // Set pending confirmation
-    
-        return true; // Command executed successfully
-    }    
+
+        ItemStack greenGlass = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
+        ItemMeta greenMeta = greenGlass.getItemMeta();
+        greenMeta.setDisplayName("§aConfirme la suppression");
+        greenGlass.setItemMeta(greenMeta);
+
+        gui.setItem(13, greenGlass);
+
+        player.openInventory(gui);
+    }
+
+    public void handleConfirmDelete(Player player, String homeName) {
+        UUID playerId = player.getUniqueId();
+        if (!pendingDeletions.containsKey(playerId) || !pendingDeletions.get(playerId).equals(homeName)) {
+            player.sendMessage("§cAucune de requête en cours.");
+            return;
+        }
+        pendingDeletions.remove(playerId);
+        homeManager.removeHome(playerId, homeName);
+        player.sendMessage(homeManager.getConfigManager().getMessage("home_deleted").replace("%home%", homeName));
+    }
+
+    public void handleCancelDelete(Player player) {
+        UUID playerId = player.getUniqueId();
+        if (!pendingDeletions.containsKey(playerId)) {
+            player.sendMessage("§cAucune de requête en cours.");
+            return;
+        }
+        pendingDeletions.remove(playerId);
+        player.sendMessage(homeManager.getConfigManager().getMessage("cancel_deletation"));
+    }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (!(sender instanceof Player)) {
-            return null; // Only players can use tab completion
+            return null;
         }
 
         Player player = (Player) sender;
         List<String> completions = new ArrayList<>();
 
-        // If there are no arguments yet, show all homes for the player
         if (args.length == 1) {
             UUID playerId = player.getUniqueId();
             List<Home> homes = homeManager.getHomesMap().get(playerId);
-            if(homes!=null){
+            if (homes != null) {
                 for (Home home : homes) {
                     completions.add(home.getName());
                 }
             }
         }
 
-        return completions; // Return the list of completions
+        return completions;
     }
 }
-

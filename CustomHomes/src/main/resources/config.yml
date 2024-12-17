@@ -11,6 +11,7 @@ messages:
   specify_home_to_delete: "&4 Précise le nom pour le home à supprimer!"
   specify_home_to_teleport: "&4 Précise le nom du home auquel te téléporter!"
   home_deleted: "&7Le home &a'%home%' &7a été supprimé!"
+  cancel_deletation: "&cAnnulation de la requête."
 
 max-homes:
   #Ajouter les noms ranks LuckPerms, le nombre est associé à la permission group.<nom> des rangs.

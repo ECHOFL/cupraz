@@ -1,3 +1,10 @@
 {
-  "cSpell.words": ["customhomes"]
+  "cSpell.words": ["customhomes"],
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/SpigotMC/Spigot-API/master/src/main/resources/plugin.yml": "file:///path/to/your/plugin.yml",
+    "https://json.schemastore.org/bukkit-plugin.json": [
+      "file:///home/mtheo/Documents/professionel/dev/mcplug/cupraz-1/CustomHomes/src/main/resources/plugin.yml"
+    ],
+    "https://json.schemastore.org/phrase.json": "file:///home/mtheo/Documents/professionel/dev/mcplug/cupraz-1/CustomHomes/src/main/resources/config.yml"
+  }
 }
