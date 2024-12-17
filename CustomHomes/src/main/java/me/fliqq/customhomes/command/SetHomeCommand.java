@@ -17,33 +17,29 @@ public class SetHomeCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage("Only players can use this command.");
-            return true; // Command executed successfully
+            return true;
         }
 
         Player player = (Player) sender;
 
-        // Check for correct number of arguments
         if (args.length != 1) {
             player.sendMessage(homeManager.getConfigManager().getMessage("specify_home_to_set"));
-            return false; // Show usage message
+            return false; 
         }
 
         String homeName = args[0];
 
-        // Check if the home name is valid (only alphanumeric characters)
         if (!isValidHomeName(homeName)) {
-            player.sendMessage(homeManager.getConfigManager().getMessage("invalid_home_name")); // Use custom message
-            return false; // Invalid home name
+            player.sendMessage(homeManager.getConfigManager().getMessage("invalid_home_name")); 
+            return false; 
         }
 
-        // Call the HomeManager to set the home
         homeManager.setHome(player.getUniqueId(), homeName, player.getLocation());
 
-        return true; // Command executed successfully
+        return true; 
     }
 
     private boolean isValidHomeName(String name) {
-        // Check if the name matches the regex for valid characters (alphanumeric only)
         return name.matches("^[a-zA-Z0-9]+$");
     }
 }

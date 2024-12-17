@@ -44,7 +44,6 @@ public class HomeManager {
     }
 
     public void loadHomes(UUID playerId) {
-            // Load homes from file if not already loaded
             this.config = YamlConfiguration.loadConfiguration(homesFile);
             
             if (config.contains(playerId.toString())) {
@@ -52,15 +51,14 @@ public class HomeManager {
                 for (String homeName : config.getConfigurationSection(playerId.toString()).getKeys(false)) {
                     String locString = config.getString(playerId.toString() + "." + homeName);
                     Location location = stringToLocation(locString);
-                    homes.add(new Home(homeName, location)); // Ensure you're using the correct constructor
+                    homes.add(new Home(homeName, location)); 
                 }
                 playersHomes.put(playerId, homes);
             } else {
-                playersHomes.put(playerId, new ArrayList<>()); // Initialize with an empty list if no homes exist
+                playersHomes.put(playerId, new ArrayList<>());
             }
     }
     
-    // Save all homes for a specific player
     public void saveHomes(UUID playerId) {
         this.config = YamlConfiguration.loadConfiguration(homesFile);
     
@@ -77,7 +75,6 @@ public class HomeManager {
         } catch (IOException e) {
             Bukkit.getLogger().severe("Impossible d'enregistrer dans le fichier homes.yml");
         }
-        //remove player data from map after disconnecting
         playersHomes.remove(playerId);
     }
 
@@ -86,7 +83,6 @@ public class HomeManager {
 
         for (Map.Entry<UUID, List<Home>> entry : playersHomes.entrySet()) {
             String uuid = entry.getKey().toString();
-                    // Clear existing homes for this player in the config
             config.set(uuid, null);
             for (Home home : entry.getValue()) {
                 String locString = locationToString(home.getLocation());
@@ -102,29 +98,24 @@ public class HomeManager {
     }
 
     public void setHome(UUID playerId, String name, Location location) {
-        // Ensure the player's homes list is initialized
         playersHomes.putIfAbsent(playerId, new ArrayList<>());
     
-        // Check the maximum number of homes for the player
-        int maxHomes = getMaxHomesBasedOnRank(Bukkit.getPlayer(playerId)); // Get max homes based on rank
+        int maxHomes = getMaxHomesBasedOnRank(Bukkit.getPlayer(playerId));
     
-        // Check if the player has reached their maximum number of homes
         if (playersHomes.get(playerId).size() >= maxHomes) {
             Bukkit.getPlayer(playerId).sendMessage(
                 configManager.getMessage("max_home_number").replace("%max-home%", String.valueOf(maxHomes))
             );
-            return; // Prevent adding more homes
+            return;
         }
     
-        // Check if the home already exists
         for (Home home : playersHomes.get(playerId)) {
             if (home.getName().equalsIgnoreCase(name)) {
                 Bukkit.getPlayer(playerId).sendMessage(configManager.getMessage("home_exists").replace("%home%", name));
-                return; // Prevent overwriting existing home
+                return; 
             }
         }
     
-        // Add the new home
         playersHomes.get(playerId).add(new Home(name, location));
         Bukkit.getPlayer(playerId).sendMessage(configManager.getMessage("home_set").replace("%home%", name));
     }

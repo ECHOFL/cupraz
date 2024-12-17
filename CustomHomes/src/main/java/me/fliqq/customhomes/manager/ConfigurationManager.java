@@ -21,7 +21,7 @@ public class ConfigurationManager {
 
     @SuppressWarnings("deprecation")
     public String getMessage(String key) {
-        return ChatColor.translateAlternateColorCodes('&', config.getString("messages." + key, "Message introuvable!")); // Translate color codes
+        return ChatColor.translateAlternateColorCodes('&', config.getString("messages." + key, "Message introuvable!"));
     }
 
     public int getMaxHomes(String rank) {
