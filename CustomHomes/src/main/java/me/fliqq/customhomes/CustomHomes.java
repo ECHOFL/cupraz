@@ -75,10 +75,10 @@ public class CustomHomes extends JavaPlugin implements Listener
         homeManager.saveAllHomes();
     }
     private void messages() {
-        getLogger().info("\n§a╔════════════════════════════════════╗");
-        getLogger().info("§a║  §6CustomHomes §ev1.0 §aEnabled      §a║");
-        getLogger().info("§a║  §7Plugin by §bFliqqq               §a║");
-        getLogger().info("§a╚════════════════════════════════════╝");
+        getLogger().info(" ");
+        getLogger().info("§7CustomHomes §ev1.0 §aEnabled");
+        getLogger().info("§7Plugin by §7Fliqqq");
+        getLogger().info(" ");
     }
     public CustomHomes getInstance(){
         return getPlugin(CustomHomes.class);
