@@ -5,7 +5,7 @@ messages:
   home_exists: "Home '%home%' existe déja!"
   home_not_found: "Home '%home%' n'existe pas"
   teleported_to_home: "&7Téléporté à l'home &a'%home%'."
-  max_home_number: "Nombre maximal de home atteint (%max-home%)!"
+  max_home_number: "&7 Nombre maximal de home atteint pour ton grade (&c %max-home%)!"
   specify_home_to_set: "&4 Précise un nom pour le home à créer!"
   invalid_home_name: "&cLe nom du home ne peut contenir que des lettres et des chiffres &f(a-z, A-Z, 0-9)."
   specify_home_to_delete: "&4 Précise le nom pour le home à supprimer!"
@@ -20,4 +20,4 @@ max-homes:
   #Mod: 5
   mvp: 3
   vip: 2
-  default: 1 #Ligne obligatoire pour valeur par défaut.
+  default: 1 #Ligne obligatoire pour une valeur par défaut.
