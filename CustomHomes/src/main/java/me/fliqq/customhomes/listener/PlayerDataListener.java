@@ -22,7 +22,5 @@ public class PlayerDataListener implements Listener{
     public void onPlayerQuit(PlayerQuitEvent event){
         UUID uuid = event.getPlayer().getUniqueId();
         homeManager.saveHomes(uuid);
-        //useless
-        //homeManager.getHomesMap().remove(uuid);
     }
 }
