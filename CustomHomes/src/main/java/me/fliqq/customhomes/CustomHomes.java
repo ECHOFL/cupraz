@@ -74,6 +74,7 @@ public class CustomHomes extends JavaPlugin implements Listener
     public void onDisable(){
         homeManager.saveAllHomes();
     }
+    
     private void messages() {
         getLogger().info(" ");
         getLogger().info("§7CustomHomes §ev1.0 §aEnabled");

@@ -6,11 +6,8 @@ author: Fliqq
 api-version: 1.21.1
 commands:
   sethome:
-    description: Sets a home for the player
-    usage: /sethome <home>
+    description: Sets a home
   home:
-    description: Teleports to a specified home
-    usage: /home <home>
+    description: Teleport to home
   delhome:
     description: Deletes a home
-    usage: /delhome <home>

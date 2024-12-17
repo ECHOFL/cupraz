@@ -54,7 +54,7 @@ public class DelHomeCommand implements CommandExecutor, TabCompleter {
     @SuppressWarnings("deprecation")
     private void openConfirmationGUI(Player player, String homeName) {
         ConfirmDeletionHolder holder = new ConfirmDeletionHolder(homeName);
-        Inventory gui = Bukkit.createInventory(holder, 27, "§eConfirm la suppression de: §f§l" + homeName);
+        Inventory gui = Bukkit.createInventory(holder, 27, "Suppression de: §a" + homeName);
 
         ItemStack redGlass = new ItemStack(Material.RED_STAINED_GLASS_PANE);
         ItemMeta redMeta = redGlass.getItemMeta();
