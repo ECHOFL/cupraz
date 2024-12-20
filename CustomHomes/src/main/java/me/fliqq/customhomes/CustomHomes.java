@@ -77,8 +77,8 @@ public class CustomHomes extends JavaPlugin implements Listener
     
     private void messages() {
         getLogger().info(" ");
-        getLogger().info("§7CustomHomes §ev1.0 §aEnabled");
-        getLogger().info("§7Plugin by §7Fliqqq");
+        getLogger().info("CustomHomes v1.0 Enabled");
+        getLogger().info("Plugin by Fliqqq");
         getLogger().info(" ");
     }
     public CustomHomes getInstance(){

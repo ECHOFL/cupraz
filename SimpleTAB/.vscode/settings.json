@@ -1,0 +1,7 @@
+{
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/SpigotMC/Spigot-API/master/src/main/resources/plugin.yml": "file:///path/to/your/plugin.yml",
+    "https://json.schemastore.org/bukkit-plugin.json": "file:///home/mtheo/Documents/professionel/dev/mcplug/SimpleTAB/src/main/resources/plugin.yml"
+  },
+  "java.compile.nullAnalysis.mode": "disabled"
+}
