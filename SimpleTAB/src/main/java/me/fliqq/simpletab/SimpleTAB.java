@@ -1,9 +1,6 @@
 package me.fliqq.simpletab;
 
-import java.util.function.Consumer;
-
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.luckperms.api.LuckPerms;
@@ -11,8 +8,7 @@ import net.luckperms.api.LuckPerms;
 public class SimpleTAB extends JavaPlugin
 {
     private LuckPerms luckPerms;
-    private PrefixManager prefixManager;
-    private TabListManager tabListManager;
+    private SimpleTabManager simpleTabManager;
     private PlayerMetaListener playerMetaListener;
 
     @Override
@@ -24,15 +20,16 @@ public class SimpleTAB extends JavaPlugin
             return;
         }
 
-        prefixManager = new PrefixManager(luckPerms);
-        tabListManager = new TabListManager(luckPerms);
-        playerMetaListener = new PlayerMetaListener(this, luckPerms, prefixManager);
+        simpleTabManager = new SimpleTabManager(luckPerms);
+        simpleTabManager.initTeams();
+
+        playerMetaListener = new PlayerMetaListener(this, luckPerms, simpleTabManager);
         playerMetaListener.register();
 
 
-        getServer().getPluginManager().registerEvents(new ConnectionListener(), this);
-
-        Bukkit.getScheduler().runTaskTimer(this, this::updateOnlinePlayers, 20L, 600L);
+        getServer().getPluginManager().registerEvents(new ConnectionListener(simpleTabManager), this);
+        getCommand("tabreload").setExecutor(new TabReloadCommand(simpleTabManager));
+        Bukkit.getScheduler().runTaskTimer(this, simpleTabManager::updateTabList, 20L, 400L);
 
         messages();
     }
@@ -43,13 +40,6 @@ public class SimpleTAB extends JavaPlugin
         }
         return null;
     }
-
-    public void updateOnlinePlayers() {
-        Consumer<Player> cons = player -> prefixManager.updatePlayerPrefix(player);
-        Bukkit.getOnlinePlayers().forEach(cons);
-        tabListManager.updateTabList();
-    }
-
 
 
         
