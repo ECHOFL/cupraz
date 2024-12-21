@@ -1,8 +1,10 @@
 package me.fliqq.simpletab;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class TabReloadCommand implements CommandExecutor {
     private final SimpleTabManager simpleTabManager;
@@ -22,6 +24,9 @@ public class TabReloadCommand implements CommandExecutor {
         }
         simpleTabManager.updateTabList();
         simpleTabManager.updateAllPlayerPrefixes();
+        simpleTabManager.initTeams();
+        for(Player player : Bukkit.getOnlinePlayers())
+            simpleTabManager.updatePlayerTeam(player);
         return true;
     }
     
